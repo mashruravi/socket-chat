@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +9,44 @@
 	<link rel="stylesheet" href="bootstrap.min.css" class="rel">
 
 	<title>Zap</title>
+
+	<style>
+		body {
+			background-color: skyblue;
+		}
+
+		#wrapper {
+			text-align: center;
+			width: 40%;
+			margin-top: 30vh;
+			background-color: white;
+			padding: 25px;
+			border-radius: 10px;
+			box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.2);
+		}
+	</style>
+
+	<script>
+		// function joinchat() {
+		// 	window.location.href = "/chat.html";
+		// }
+	</script>
 </head>
+
 <body>
 
-	
-	
+	<div id="wrapper" class="container-fluid">
+		<form class="form-inline" action="/chat.html" method="GET">
+			<div class="form-group">
+				<input type="text" class="form-control" id="hostname" placeholder="Host name" name="hostname">
+			</div>
+			<div class="form-group">
+				<input type="number" class="form-control" id="portnumber" placeholder="Port Number" name="port">
+			</div>
+			<button type="submit" class="btn btn-primary">Join</button>
+		</form>
+	</div>
+
 </body>
+
 </html>

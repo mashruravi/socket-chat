@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<link rel="stylesheet" href="bootstrap.min.css" class="rel">
+
+	<title>Zap</title>
+
+	<script>
+		window.onload = function() {
+			var arr = window.location.search.split("?")[1].split("&");
+			var hostname = arr[0].split("=")[1];
+			var portnum = arr[1].split("=")[1];
+		}
+	</script>
+
+</head>
+
+<body>
+
+	<p id="host"></p>
+	<p id="port"></p>
+
+</body>
+
+</html>
