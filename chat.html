@@ -8,6 +8,8 @@
 
 	<link rel="stylesheet" href="bootstrap.min.css" class="rel">
 
+	<script src="jquery-1.11.1.min.js" type="text/javascript"></script>
+
 	<title>Zap</title>
 
 	<script>
@@ -15,6 +17,25 @@
 			var arr = window.location.search.split("?")[1].split("&");
 			var hostname = arr[0].split("=")[1];
 			var portnum = arr[1].split("=")[1];
+			var username = arr[2].split("=")[1];
+
+			var req = $.ajax({
+				url: "/join",
+				method: "POST",
+				data: {
+					host: hostname,
+					port: portnum,
+					user: username
+				}
+			});
+
+			req.done(function(res) {
+				console.log(res);
+			});
+
+			req.fail(function(err){
+				console.error(err);
+			});
 		}
 	</script>
 

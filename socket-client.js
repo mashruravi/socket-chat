@@ -1,16 +1,32 @@
 let net = require("net");
 
-let HOST = "localhost";
-let PORT = 4321;
+// let HOST = "localhost";
+// let PORT = 4321;
 
-let client = new net.Socket();
+// let client = new net.Socket();
 
-client.connect(PORT, HOST, () => {
-	console.log("Client connect listener");
-});
+// client.connect(PORT, HOST, () => {
+// 	console.log("Client connect listener");
+// });
 
-client.on('data', (data) => {
-	console.log("Server says: " + data);
+// client.on('data', (data) => {
+// 	console.log("Server says: " + data);
+// });
 
-	// client.destroy();
-});
+module.exports = {
+
+	connect: function (host, port, user) {
+		
+		let client = new net.Socket();
+
+		return new Promise((res, rej) => {
+
+			client.connect(port, host, () => {
+				res();
+			});
+
+		});
+
+	}
+
+};
