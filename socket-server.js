@@ -47,3 +47,5 @@ net.createServer((sock) => {
 	}
 
 }).listen(PORT, HOST);
+
+console.log("Listening on " + HOST + ":" + PORT);
