@@ -11,6 +11,8 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 app.use(express.static("."))
 
+let clients = [];
+
 app.post("/join", (request, response) => {
 
 	const hostname = "localhost";
@@ -22,7 +24,7 @@ app.post("/join", (request, response) => {
 
 	cli.on("connected", () => {
 		response.status(200).json({
-			status: "conncted"
+			status: "connected"
 		});
 	});
 
@@ -34,6 +36,36 @@ app.post("/join", (request, response) => {
 
 const server = http.createServer(app);
 const wss = new ws.Server({ server });
+
+wss.on("connection", (ws, req) => {
+
+	ws.on("message", (data) => {
+
+		let msg = JSON.parse(data);
+
+		switch (msg.action) {
+			case "register":
+				let username = msg.data;
+				clients.push({
+					user: username,
+					wsconn: ws
+				});
+				break;
+
+			default:
+				clients.forEach(e => {
+					e.wsconn.send(msg.data);
+				});
+		}
+
+	});
+
+	// Remove websocket from 'clients' on close
+	// ws.on("close", () => {
+	// 	clients.splice(clients.indexOf)
+	// });
+
+});
 
 server.listen(8000, function () {
 	console.log("Listening on port 8000");
