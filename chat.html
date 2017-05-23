@@ -14,17 +14,13 @@
 
 	<script>
 		window.onload = function() {
-			var arr = window.location.search.split("?")[1].split("&");
-			var hostname = arr[0].split("=")[1];
-			var portnum = arr[1].split("=")[1];
-			var username = arr[2].split("=")[1];
+			var params = window.location.search.split("?")[1];
+			var username = params.split("=")[1];
 
 			var req = $.ajax({
 				url: "/join",
 				method: "POST",
 				data: {
-					host: hostname,
-					port: portnum,
 					user: username
 				}
 			});

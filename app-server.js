@@ -11,26 +11,9 @@ app.use(express.static("."))
 
 app.post("/join", (request, response) => {
 
-	var hostname = request.body.host;
-	var portnum = request.body.port;
-	var username = request.body.user;
-
-	// var conn = socketClient.connect(hostname, portnum, username);
-	
-	// conn.then((res) => {
-
-	// 	console.log("Success: ", res);
-	// 	response.status(200).json({
-	// 		status: "connected"
-	// 	});
-
-	// });
-	
-	// conn.catch((err) => {
-	// 	console.log("Error: ", err);
-	// 	response.status(500).json(err);
-
-	// });
+	var hostname = "localhost";
+	var portnum = 4321;
+	var username = request.body.username;
 
 	let cli = new socketClient(hostname, portnum, username);
 	cli.connect();
