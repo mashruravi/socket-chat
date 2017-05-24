@@ -11,7 +11,7 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 app.use(express.static("."))
 
-let clients = [];
+let cli = null;
 
 app.post("/join", (request, response) => {
 
@@ -19,7 +19,7 @@ app.post("/join", (request, response) => {
 	const portnum = 4321;
 	const username = request.body.username;
 
-	let cli = new socketClient(hostname, portnum, username);
+	cli = new socketClient(hostname, portnum, username);
 	cli.connect();
 
 	cli.on("connected", () => {
@@ -43,27 +43,11 @@ wss.on("connection", (ws, req) => {
 
 		let msg = JSON.parse(data);
 
-		switch (msg.action) {
-			case "register":
-				let username = msg.data;
-				clients.push({
-					user: username,
-					wsconn: ws
-				});
-				break;
-
-			default:
-				clients.forEach(e => {
-					e.wsconn.send(msg.data);
-				});
-		}
-
 	});
 
-	// Remove websocket from 'clients' on close
-	// ws.on("close", () => {
-	// 	clients.splice(clients.indexOf)
-	// });
+	ws.on("close", () => {
+		cli.disconnect();
+	});
 
 });
 

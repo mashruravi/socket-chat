@@ -31,26 +31,19 @@
 				var url = document.location.host;
 				var conn = new WebSocket("ws://" + url);
 
-				conn.onopen = function() {
+				// conn.onopen = function() {
 
-					var data = {
-						action: "register",
-						data: username
-					};
+				// 	var data = {
+				// 		action: "register",
+				// 		data: username
+				// 	};
 
-					conn.send(JSON.stringify(data));
-				}
+				// 	conn.send(JSON.stringify(data));
+				// }
 
 				conn.onmessage = function(response) {
 					alert(response.data);
 				}
-
-				setTimeout(function(){
-					conn.send(JSON.stringify({
-						action: "echo",
-						data: "I am " + username
-					}));
-				}, 1000);
 
 			});
 

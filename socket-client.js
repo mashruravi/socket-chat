@@ -2,9 +2,9 @@ const net = require("net");
 const events = require("events");
 const util = require("util");
 
-let socketClient = function(host, port, user) {
-	this.hostname = host;
-	this.portnum = port;
+let socketClient = function (host, port, user) {
+	this.serverHostname = host;
+	this.serverPortnum = port;
 	this.username = user;
 
 	events.EventEmitter.call(this);
@@ -12,12 +12,20 @@ let socketClient = function(host, port, user) {
 
 util.inherits(socketClient, events.EventEmitter);
 
-socketClient.prototype.connect = function() {
+socketClient.prototype.connect = function () {
 
-	let client = new net.Socket();
-	client.connect(this.portnum, this.hostname, () => {
+	this.client = new net.Socket();
+	this.client.connect(this.serverPortnum, this.serverHostname, () => {
 		this.emit("connected");
 	});
+
+}
+
+socketClient.prototype.disconnect = function () {
+	this.client.end();
+}
+
+socketClient.prototype.sendMessage = function (message) {
 
 }
 
