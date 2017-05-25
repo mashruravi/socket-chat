@@ -1,6 +1,7 @@
 let net = require("net");
+let ip = require("ip");
 
-let HOST = "localhost";
+let HOST = ip.address();
 let PORT = 4321;
 
 let count = 0;

@@ -13,20 +13,24 @@
 	<title>Zap</title>
 
 	<script>
-		window.onload = function() {
-			var params = window.location.search.split("?")[1];
-			var username = params.split("=")[1];
+		window.onload = function () {
+			var arr = window.location.search.split("?")[1].split("&");
+			var hostname = arr[0].split("=")[1];
+			var portnum = arr[1].split("=")[1];
+			var username = arr[2].split("=")[1];
 
 			var req = $.ajax({
 				url: "/join",
 				method: "POST",
 				data: {
+					host: hostname,
+					port: portnum,
 					user: username
 				}
 			});
 
-			req.done(function(res) {
-				
+			req.done(function (res) {
+
 				// Start a websocket connection
 				var url = document.location.host;
 				var conn = new WebSocket("ws://" + url);
@@ -41,13 +45,13 @@
 				// 	conn.send(JSON.stringify(data));
 				// }
 
-				conn.onmessage = function(response) {
+				conn.onmessage = function (response) {
 					alert(response.data);
 				}
 
 			});
 
-			req.fail(function(err){
+			req.fail(function (err) {
 				console.error(err);
 			});
 		}

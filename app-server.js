@@ -15,9 +15,11 @@ let cli = null;
 
 app.post("/join", (request, response) => {
 
-	const hostname = "localhost";
-	const portnum = 4321;
-	const username = request.body.username;
+	const hostname = request.body.host;
+	const portnum = request.body.port;
+	const username = request.body.user;
+
+	console.log(hostname, portnum, username);
 
 	cli = new socketClient(hostname, portnum, username);
 	cli.connect();
