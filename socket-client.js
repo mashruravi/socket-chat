@@ -16,6 +16,13 @@ socketClient.prototype.connect = function () {
 
 	this.client = new net.Socket();
 	this.client.connect(this.serverPortnum, this.serverHostname, () => {
+
+		// Attach event handler for data coming from server
+		this.client.on("data", this.handleMessage);
+
+		// Send the client's username to the server
+		this.sendMessage("setAlias", this.username);
+
 		this.emit("connected");
 	});
 
@@ -25,8 +32,15 @@ socketClient.prototype.disconnect = function () {
 	this.client.end();
 }
 
-socketClient.prototype.sendMessage = function (message) {
+socketClient.prototype.sendMessage = function (action, message) {
+	this.client.write(JSON.stringify({
+		action: action,
+		message: message
+	}));
+}
 
+socketClient.prototype.handleMessage = function (data) {
+	console.log(data.toString());
 }
 
 module.exports = socketClient;

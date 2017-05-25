@@ -19,8 +19,6 @@ app.post("/join", (request, response) => {
 	const portnum = request.body.port;
 	const username = request.body.user;
 
-	console.log(hostname, portnum, username);
-
 	cli = new socketClient(hostname, portnum, username);
 	cli.connect();
 

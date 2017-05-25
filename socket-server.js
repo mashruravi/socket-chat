@@ -10,14 +10,14 @@ let connections = [];
 
 function broadcast(message) {
 	connections.forEach((e) => {
-		e.write(message);
+		e.sock.write(message);
 	});
 }
 
 function logConnections() {
 	console.log("\nRemaining connections: ");
 	connections.forEach((e, i) => {
-		console.log(i + " - " + e.remoteAddress + ":" + e.remotePort);
+		console.log(e.alias + " - " + e.sock.remoteAddress + ":" + e.sock.remotePort);
 	});
 }
 
@@ -27,14 +27,6 @@ function removeConnection(conn) {
 }
 
 net.createServer((sock) => {
-
-	connections.push(sock);
-
-	console.log("Server received connection: "
-		+ sock.remoteAddress + ":" + sock.remotePort);
-	count++;
-
-	sock.write("You are client number " + count);
 
 	sock.on('end', () => {
 		console.log(sock.remoteAddress + ": " + sock.remotePort + " disconnected");
@@ -47,6 +39,24 @@ net.createServer((sock) => {
 		removeConnection(sock);
 		console.log("Error from connection " + sock.remoteAddress + ":" + sock.remotePort);
 		logConnections();
+	});
+
+	sock.on('data', (data) => {
+		let info = JSON.parse(data.toString());
+
+		switch(info.action) {
+
+			case "setAlias":
+				connections.push({
+					alias: info.message,
+					sock: sock
+				});
+				break;
+
+		}
+
+		logConnections();
+
 	});
 
 }).listen(PORT, HOST);
