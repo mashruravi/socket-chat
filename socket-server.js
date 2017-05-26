@@ -66,9 +66,16 @@ net.createServer((sock) => {
 				});
 				break;
 
-		}
+			case "message":
+				console.log(info);
+				broadcast({
+					action: "message",
+					identifier: info.identifier,
+					message: info.message
+				});
+				break;
 
-		logConnections();
+		}
 	});
 
 }).listen(PORT, HOST);

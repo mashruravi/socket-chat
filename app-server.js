@@ -36,16 +36,16 @@ wss.on("connection", (ws, req) => {
 	cli.connect();
 
 	cli.on("connected", () => {
-		
+
 	});
 
 	cli.on("error", (err) => {
-		
+
 	});
 
 	ws.on("message", (data) => {
 
-		let msg = JSON.parse(data);
+		cli.sendMessage("message", data, params.username);
 
 	});
 
@@ -59,19 +59,31 @@ wss.on("connection", (ws, req) => {
 
 		ws.send(JSON.stringify({
 			type: "control",
-			text: data + " joined the chat room"
+			text: data + " joined the chat room",
+			identifier: ""
 		}));
 	});
 
 	cli.on("leave", (data) => {
 
-		if(data === params.username) {
+		if (data === params.username) {
 			return;
 		}
 
 		ws.send(JSON.stringify({
 			type: "control",
 			text: data + " left the chat room"
+		}));
+	});
+
+	cli.on("message", (data) => {
+
+		data.user = (data.user === params.username) ? "You" : data.user;
+
+		ws.send(JSON.stringify({
+			type: "message",
+			text: data.message,
+			identifier: data.user
 		}));
 	});
 

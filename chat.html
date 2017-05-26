@@ -13,7 +13,6 @@
 	<title>Zap</title>
 
 	<style>
-
 		#messages {
 			width: 400px;
 			height: 400px;
@@ -24,7 +23,6 @@
 		#messages .control {
 			font-weight: bold;
 		}
-
 	</style>
 
 	<script>
@@ -61,18 +59,31 @@
 				// }
 
 				conn.onmessage = function (response) {
-					
+
 					var message = JSON.parse(response.data);
 
-					switch(message.type) {
+					switch (message.type) {
 
 						case "control":
 							$("#messages").append("<p class='control'>" + message.text + "</p>");
 							break;
 
+						case "message":
+							$("#messages").append("<p><span class='control'>" + message.identifier + ":</span> " + message.text + "</p>");
+							break;
+
+
 					}
 
 				}
+
+				$("#sendbutton").on("click", function () {
+					var message = $("#message").val().trim();
+					if (message) {
+						conn.send(message);
+						$("#message").val("");
+					}
+				});
 
 			});
 
@@ -89,8 +100,8 @@
 	<div id="messages"></div>
 
 	<div id="input">
-		<input type="text">
-		<button>Send</button>
+		<input type="text" id="message">
+		<button id="sendbutton">Send</button>
 	</div>
 
 </body>

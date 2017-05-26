@@ -32,10 +32,11 @@ socketClient.prototype.disconnect = function () {
 	this.client.end();
 }
 
-socketClient.prototype.sendMessage = function (action, message) {
+socketClient.prototype.sendMessage = function (action, message, identifier) {
 	this.client.write(JSON.stringify({
 		action: action,
-		message: message
+		message: message,
+		identifier: identifier
 	}));
 }
 
@@ -50,6 +51,13 @@ socketClient.prototype.handleMessage = function (data) {
 
 		case "leave":
 			this.emit("leave", message.identifier);
+			break;
+
+		case "message":
+			this.emit("message", {
+				user: message.identifier,
+				message: message.message
+			});
 			break;
 
 	}
