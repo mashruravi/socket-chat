@@ -48,6 +48,10 @@ socketClient.prototype.handleMessage = function (data) {
 			this.emit("join", message.identifier);
 			break;
 
+		case "leave":
+			this.emit("leave", message.identifier);
+			break;
+
 	}
 
 }

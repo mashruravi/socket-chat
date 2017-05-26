@@ -59,7 +59,19 @@ wss.on("connection", (ws, req) => {
 
 		ws.send(JSON.stringify({
 			type: "control",
-			text: data + " just joined the chat room"
+			text: data + " joined the chat room"
+		}));
+	});
+
+	cli.on("leave", (data) => {
+
+		if(data === params.username) {
+			return;
+		}
+
+		ws.send(JSON.stringify({
+			type: "control",
+			text: data + " left the chat room"
 		}));
 	});
 

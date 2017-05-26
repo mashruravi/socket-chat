@@ -22,8 +22,16 @@ function logConnections() {
 }
 
 function removeConnection(conn) {
-	let index = connections.indexOf(conn);
+	let index = connections.findIndex((e) => {
+		return e.sock === conn;
+	});
+	let name = connections[index].alias;
 	connections.splice(index, 1);
+	broadcast({
+		action: "leave",
+		identifier: name,
+		message: ""
+	});
 }
 
 net.createServer((sock) => {
@@ -44,7 +52,7 @@ net.createServer((sock) => {
 	sock.on('data', (data) => {
 		let info = JSON.parse(data.toString());
 
-		switch(info.action) {
+		switch (info.action) {
 
 			case "setAlias":
 				connections.push({
