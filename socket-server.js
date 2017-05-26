@@ -10,7 +10,7 @@ let connections = [];
 
 function broadcast(message) {
 	connections.forEach((e) => {
-		e.sock.write(message);
+		e.sock.write(JSON.stringify(message));
 	});
 }
 
@@ -51,12 +51,16 @@ net.createServer((sock) => {
 					alias: info.message,
 					sock: sock
 				});
+				broadcast({
+					action: "join",
+					identifier: info.message,
+					message: ""
+				});
 				break;
 
 		}
 
 		logConnections();
-
 	});
 
 }).listen(PORT, HOST);

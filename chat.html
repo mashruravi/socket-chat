@@ -12,6 +12,21 @@
 
 	<title>Zap</title>
 
+	<style>
+
+		#messages {
+			width: 400px;
+			height: 400px;
+			border: 1px solid black;
+			overflow-y: scroll;
+		}
+
+		#messages .control {
+			font-weight: bold;
+		}
+
+	</style>
+
 	<script>
 		window.onload = function () {
 			var arr = window.location.search.split("?")[1].split("&");
@@ -46,7 +61,17 @@
 				// }
 
 				conn.onmessage = function (response) {
-					alert(response.data);
+					
+					var message = JSON.parse(response.data);
+
+					switch(message.type) {
+
+						case "control":
+							$("#messages").append("<p class='control'>" + message.text + "</p>");
+							break;
+
+					}
+
 				}
 
 			});
@@ -61,8 +86,12 @@
 
 <body>
 
-	<p id="host"></p>
-	<p id="port"></p>
+	<div id="messages"></div>
+
+	<div id="input">
+		<input type="text">
+		<button>Send</button>
+	</div>
 
 </body>
 

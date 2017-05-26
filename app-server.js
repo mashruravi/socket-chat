@@ -11,26 +11,19 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 app.use(express.static("."))
 
-let cli = null;
+const params = {
+	hostname: null,
+	portnum: null,
+	username: null
+};
 
 app.post("/join", (request, response) => {
 
-	const hostname = request.body.host;
-	const portnum = request.body.port;
-	const username = request.body.user;
+	params.hostname = request.body.host;
+	params.portnum = request.body.port;
+	params.username = request.body.user;
 
-	cli = new socketClient(hostname, portnum, username);
-	cli.connect();
-
-	cli.on("connected", () => {
-		response.status(200).json({
-			status: "connected"
-		});
-	});
-
-	cli.on("error", (err) => {
-		response.status(500).json(err);
-	});
+	response.status(200).end();
 
 });
 
@@ -38,6 +31,17 @@ const server = http.createServer(app);
 const wss = new ws.Server({ server });
 
 wss.on("connection", (ws, req) => {
+
+	let cli = new socketClient(params.hostname, params.portnum, params.username);
+	cli.connect();
+
+	cli.on("connected", () => {
+		
+	});
+
+	cli.on("error", (err) => {
+		
+	});
 
 	ws.on("message", (data) => {
 
@@ -47,6 +51,16 @@ wss.on("connection", (ws, req) => {
 
 	ws.on("close", () => {
 		cli.disconnect();
+	});
+
+	cli.on("join", (data) => {
+
+		data = (data === params.username) ? "You" : data;
+
+		ws.send(JSON.stringify({
+			type: "control",
+			text: data + " just joined the chat room"
+		}));
 	});
 
 });

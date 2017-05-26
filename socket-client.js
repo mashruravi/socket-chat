@@ -18,11 +18,11 @@ socketClient.prototype.connect = function () {
 	this.client.connect(this.serverPortnum, this.serverHostname, () => {
 
 		// Attach event handler for data coming from server
-		this.client.on("data", this.handleMessage);
+		this.client.on("data", this.handleMessage.bind(this));
 
 		// Send the client's username to the server
 		this.sendMessage("setAlias", this.username);
-
+		
 		this.emit("connected");
 	});
 
@@ -40,7 +40,16 @@ socketClient.prototype.sendMessage = function (action, message) {
 }
 
 socketClient.prototype.handleMessage = function (data) {
-	console.log(data.toString());
+	let message = JSON.parse(data);
+
+	switch(message.action) {
+
+		case "join":
+			this.emit("join", message.identifier);
+			break;
+
+	}
+
 }
 
 module.exports = socketClient;
