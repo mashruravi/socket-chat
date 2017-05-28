@@ -18,6 +18,7 @@
 			height: 400px;
 			border: 1px solid black;
 			overflow-y: scroll;
+			overflow-wrap: break-word;
 		}
 
 		#messages .control {
@@ -69,7 +70,9 @@
 							break;
 
 						case "message":
-							$("#messages").append("<p><span class='control'>" + message.identifier + ":</span> " + message.text + "</p>");
+							var messageDiv = $("#messages");
+							messageDiv.append("<p><span class='control'>" + message.identifier + ":</span> " + message.text + "</p>");
+							messageDiv.scrollTop(messageDiv.find('p').last()[0].offsetTop);
 							break;
 
 
