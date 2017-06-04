@@ -71,7 +71,7 @@
 
 						case "message":
 							var messageDiv = $("#messages");
-							messageDiv.append("<p><span class='control'>" + message.identifier + ":</span> " + message.text + "</p>");
+							messageDiv.append("<p><span class='control'>" + message.identifier + " (" + message.time + ")" + ":</span> " + message.text + "</p>");
 							messageDiv.scrollTop(messageDiv.find('p').last()[0].offsetTop);
 							break;
 

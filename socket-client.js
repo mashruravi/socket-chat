@@ -56,7 +56,8 @@ socketClient.prototype.handleMessage = function (data) {
 		case "message":
 			this.emit("message", {
 				user: message.identifier,
-				message: message.message
+				message: message.message,
+				time: message.time
 			});
 			break;
 

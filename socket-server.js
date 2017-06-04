@@ -15,7 +15,7 @@ function broadcast(message) {
 }
 
 function logConnections() {
-	console.log("\nRemaining connections: ");
+	console.log("\nActive connections: ");
 	connections.forEach((e, i) => {
 		console.log(e.alias + " - " + e.sock.remoteAddress + ":" + e.sock.remotePort);
 	});
@@ -67,14 +67,14 @@ net.createServer((sock) => {
 				break;
 
 			case "message":
-				console.log(info);
-				broadcast({
+				let broadcastData = {
 					action: "message",
 					identifier: info.identifier,
-					message: info.message
-				});
+					message: info.message,
+					time: (new Date()).toLocaleString()
+				};
+				broadcast(broadcastData);
 				break;
-
 		}
 	});
 

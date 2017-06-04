@@ -83,7 +83,8 @@ wss.on("connection", (ws, req) => {
 		ws.send(JSON.stringify({
 			type: "message",
 			text: data.message,
-			identifier: data.user
+			identifier: data.user,
+			time: data.time
 		}));
 	});
 
