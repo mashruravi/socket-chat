@@ -14,11 +14,19 @@
 
 	<style>
 		#messages {
-			width: 400px;
+			width: 50%;
 			height: 400px;
 			border: 1px solid black;
 			overflow-y: scroll;
 			overflow-wrap: break-word;
+		}
+
+		#users {
+			border: 1px solid black;
+			position: absolute;
+			height: 400px;
+			width: 50%;
+			right: 0;
 		}
 
 		#messages .control {
@@ -76,8 +84,13 @@
 							break;
 
 						case "userlist":
-							console.log(message.text.users);
-
+							var users = message.text.users;
+							var userDiv = $("#userlist");
+							userDiv.children().remove();
+							for(var i = 0; i < users.length; i++) {
+								var u = users[i];
+								userDiv.append("<div>" + u.username + " (" + u.ip + ":" + u.port + ")</div>");
+							}
 					}
 
 				}
@@ -101,6 +114,11 @@
 </head>
 
 <body>
+
+	<div id="users">
+		<div style="font-weight: bold;">Online Users</div>
+		<div id="userlist"></div>
+	</div>
 
 	<div id="messages"></div>
 

@@ -41,32 +41,44 @@ socketClient.prototype.sendMessage = function (action, message, identifier) {
 }
 
 socketClient.prototype.handleMessage = function (data) {
-	let message = JSON.parse(data);
+	let messages = data.toString().split("\n");
+	// console.log(messages);
+	// return;
+	messages.forEach((m) => {
 
-	switch (message.action) {
+		if (m === "") {
+			return;
+		}
 
-		case "join":
-			this.emit("join", message.identifier);
-			break;
+		let message = JSON.parse(m);
 
-		case "leave":
-			this.emit("leave", message.identifier);
-			break;
+		switch (message.action) {
 
-		case "message":
-			this.emit("message", {
-				user: message.identifier,
-				message: message.message,
-				time: message.time
-			});
-			break;
+			case "join":
+				this.emit("join", message.identifier);
+				break;
 
-		case "userlist":
-			this.emit("userlist", {
-				users: message.message
-			});
-			break;
-	}
+			case "leave":
+				this.emit("leave", message.identifier);
+				break;
+
+			case "message":
+				this.emit("message", {
+					user: message.identifier,
+					message: message.message,
+					time: message.time
+				});
+				break;
+
+			case "userlist":
+				this.emit("userlist", {
+					users: message.message
+				});
+				break;
+		}
+	});
+
+
 
 }
 
