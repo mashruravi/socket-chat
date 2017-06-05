@@ -88,6 +88,15 @@ wss.on("connection", (ws, req) => {
 		}));
 	});
 
+	cli.on("userlist", (data) => {
+
+		ws.send(JSON.stringify({
+			type: "userlist",
+			text: data
+		}));
+
+	});
+
 });
 
 server.listen(8000, function () {

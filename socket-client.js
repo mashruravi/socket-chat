@@ -22,7 +22,7 @@ socketClient.prototype.connect = function () {
 
 		// Send the client's username to the server
 		this.sendMessage("setAlias", this.username);
-		
+
 		this.emit("connected");
 	});
 
@@ -43,7 +43,7 @@ socketClient.prototype.sendMessage = function (action, message, identifier) {
 socketClient.prototype.handleMessage = function (data) {
 	let message = JSON.parse(data);
 
-	switch(message.action) {
+	switch (message.action) {
 
 		case "join":
 			this.emit("join", message.identifier);
@@ -61,6 +61,11 @@ socketClient.prototype.handleMessage = function (data) {
 			});
 			break;
 
+		case "userlist":
+			this.emit("userlist", {
+				users: message.message
+			});
+			break;
 	}
 
 }

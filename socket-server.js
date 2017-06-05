@@ -10,7 +10,7 @@ let connections = [];
 
 function broadcast(message) {
 	connections.forEach((e) => {
-		e.sock.write(JSON.stringify(message));
+		e.sock.write(JSON.stringify(message) + "\n");
 	});
 }
 
@@ -19,6 +19,36 @@ function logConnections() {
 	connections.forEach((e, i) => {
 		console.log(e.alias + " - " + e.sock.remoteAddress + ":" + e.sock.remotePort);
 	});
+}
+
+function broadcastActiveUsers() {
+
+	let users = [];
+
+	connections.forEach((e) => {
+
+		let data = {};
+		data.username = e.alias;
+		data.ip = e.sock.remoteAddress;
+		data.port = e.sock.remotePort;
+
+		users.push(data);
+
+	});
+
+	broadcast({
+		action: "userlist",
+		message: users
+	});
+
+}
+
+function addConnection(alias, socket) {
+	connections.push({
+		alias: alias,
+		sock: socket
+	});
+	broadcastActiveUsers();
 }
 
 function removeConnection(conn) {
@@ -32,6 +62,7 @@ function removeConnection(conn) {
 		identifier: name,
 		message: ""
 	});
+	broadcastActiveUsers();
 }
 
 net.createServer((sock) => {
@@ -55,10 +86,7 @@ net.createServer((sock) => {
 		switch (info.action) {
 
 			case "setAlias":
-				connections.push({
-					alias: info.message,
-					sock: sock
-				});
+				addConnection(info.message, sock);
 				broadcast({
 					action: "join",
 					identifier: info.message,
