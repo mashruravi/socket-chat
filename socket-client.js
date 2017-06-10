@@ -42,8 +42,7 @@ socketClient.prototype.sendMessage = function (action, message, identifier) {
 
 socketClient.prototype.handleMessage = function (data) {
 	let messages = data.toString().split("\n");
-	// console.log(messages);
-	// return;
+
 	messages.forEach((m) => {
 
 		if (m === "") {
@@ -71,6 +70,25 @@ socketClient.prototype.handleMessage = function (data) {
 				break;
 
 			case "userlist":
+
+				// Add a 'me' flag to user list to identify self in user list
+				let aUsers = message.message;
+				let myAddress = this.client.localAddress + ":" + this.client.localPort;
+				for (let i = 0; i < aUsers.length; i++) {
+
+					let address = aUsers[i].ip + ":" + aUsers[i].port;
+
+					if (address === myAddress) {
+
+						aUsers[i].me = true;
+
+					} else {
+
+						aUsers[i].me = false;
+
+					}
+				}
+
 				this.emit("userlist", {
 					users: message.message
 				});

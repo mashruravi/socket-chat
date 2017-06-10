@@ -89,7 +89,7 @@
 							userDiv.children().remove();
 							for(var i = 0; i < users.length; i++) {
 								var u = users[i];
-								userDiv.append("<div>" + u.username + " (" + u.ip + ":" + u.port + ")</div>");
+								userDiv.append("<div>" + u.username + " (" + u.ip + ":" + u.port + ")" + (u.me? " [You]": "") + "</div>");
 							}
 					}
 
