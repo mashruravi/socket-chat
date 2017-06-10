@@ -55,7 +55,7 @@ wss.on("connection", (ws, req) => {
 
 	cli.on("join", (data) => {
 
-		data = (data === params.username) ? "You" : data;
+		// data = (data === params.username) ? "You" : data;
 
 		ws.send(JSON.stringify({
 			type: "control",
@@ -66,9 +66,9 @@ wss.on("connection", (ws, req) => {
 
 	cli.on("leave", (data) => {
 
-		if (data === params.username) {
-			return;
-		}
+		// if (data === params.username) {
+		// 	return;
+		// }
 
 		ws.send(JSON.stringify({
 			type: "control",
@@ -78,7 +78,7 @@ wss.on("connection", (ws, req) => {
 
 	cli.on("message", (data) => {
 
-		data.user = (data.user === params.username) ? "You" : data.user;
+		// data.user = (data.user === params.username) ? "You" : data.user;
 
 		ws.send(JSON.stringify({
 			type: "message",

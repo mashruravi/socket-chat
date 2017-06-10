@@ -51,19 +51,24 @@ socketClient.prototype.handleMessage = function (data) {
 
 		let message = JSON.parse(m);
 
+		let myAddress = this.client.localAddress + ":" + this.client.localPort;
+		let user = (message.address === myAddress) ? "You" : message.identifier;
+
 		switch (message.action) {
 
 			case "join":
-				this.emit("join", message.identifier);
+				this.emit("join", user);
 				break;
 
 			case "leave":
-				this.emit("leave", message.identifier);
+				if (message.address !== myAddress) {
+					this.emit("leave", message.identifier);
+				}
 				break;
 
 			case "message":
 				this.emit("message", {
-					user: message.identifier,
+					user: user,
 					message: message.message,
 					time: message.time
 				});
@@ -73,7 +78,7 @@ socketClient.prototype.handleMessage = function (data) {
 
 				// Add a 'me' flag to user list to identify self in user list
 				let aUsers = message.message;
-				let myAddress = this.client.localAddress + ":" + this.client.localPort;
+
 				for (let i = 0; i < aUsers.length; i++) {
 
 					let address = aUsers[i].ip + ":" + aUsers[i].port;

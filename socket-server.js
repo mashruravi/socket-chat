@@ -55,11 +55,13 @@ function removeConnection(conn) {
 	let index = connections.findIndex((e) => {
 		return e.sock === conn;
 	});
-	let name = connections[index].alias;
-	connections.splice(index, 1);
+	let connection = connections.splice(index, 1)[0];
+	let name = connection.alias;
+	let address = connection.sock.remoteAddress + ":" + connection.sock.remotePort;
 	broadcast({
 		action: "leave",
 		identifier: name,
+		address: address,
 		message: ""
 	});
 	broadcastActiveUsers();
@@ -90,6 +92,7 @@ net.createServer((sock) => {
 				broadcast({
 					action: "join",
 					identifier: info.message,
+					address: sock.remoteAddress + ":" + sock.remotePort,
 					message: ""
 				});
 				break;
@@ -98,6 +101,7 @@ net.createServer((sock) => {
 				let broadcastData = {
 					action: "message",
 					identifier: info.identifier,
+					address: sock.remoteAddress + ":" + sock.remotePort,
 					message: info.message,
 					time: (new Date()).toLocaleString()
 				};
